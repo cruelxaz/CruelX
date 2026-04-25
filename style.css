@@ -1,191 +1,89 @@
-/* --- Ümumi Sıfırlama --- */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+:root {
+    --bg-color: #0a0c10;
+    --accent-color: #00d2ff;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --text-color: #ffffff;
 }
 
-body, html {
-    height: 100%;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #111; /* Tünd fon */
-    color: white;
-    overflow: hidden; /* Animasiya vaxtı skrol olmasın */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+body { background: var(--bg-color); color: var(--text-color); height: 100vh; overflow: hidden; }
+
+/* --- LOADER --- */
+#loader-wrapper {
+    position: fixed; width: 100%; height: 100%; background: #000;
+    display: flex; justify-content: center; align-items: center; z-index: 1000;
 }
 
-/* --- 1. GİRİŞ ANİMASİYASI STİLLƏRİ --- */
-#intro-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #000; /* Tam qara fon */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999; /* Hər şeyin üstündə olsun */
-    transition: opacity 1s ease-out, visibility 1s;
+.loader-content { text-align: center; }
+
+.loader-logo { width: 100px; margin-bottom: 20px; animation: pulse 2s infinite; }
+
+.loading-bar {
+    width: 200px; height: 4px; background: #222; border-radius: 10px;
+    margin: 10px auto; overflow: hidden;
 }
 
-.logo-wrapper {
-    text-align: center;
+.progress {
+    width: 0%; height: 100%; background: var(--accent-color);
+    box-shadow: 0 0 15px var(--accent-color);
+    animation: load 3s forwards;
 }
 
-/* Loqo üçün qəşəng böyüyüb-kiçilmə və parıldama animasiyası */
-.zoom-in-out-logo {
-    max-width: 150px; /* Loqonun maksimal ölçüsü */
-    height: auto;
-    opacity: 0;
-    transform: scale(0.5);
-    animation: logoIntro 2.5s ease-in-out forwards;
+.loading-text { font-size: 14px; color: #888; letter-spacing: 1px; }
+
+/* --- ANA SƏHİFƏ (GLASSMORPHISM) --- */
+#app-container {
+    height: 100vh; display: flex; justify-content: center; align-items: center;
+    padding: 20px; background: radial-gradient(circle at center, #1a1a2e 0%, #0a0c10 100%);
 }
 
-@keyframes logoIntro {
-    0% {
-        opacity: 0;
-        transform: scale(0.5);
-        filter: blur(5px);
-    }
-    40% {
-        opacity: 1;
-        transform: scale(1.1);
-        filter: blur(0px);
-    }
-    80% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(1.2);
-        filter: blur(2px);
-    }
+.glass-card {
+    width: 100%; max-width: 900px; height: 80vh;
+    background: var(--glass-bg); backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px; display: flex; flex-direction: column; overflow: hidden;
 }
 
-/* --- 2. TAM EKRAN ÇAT STİLLƏRİ --- */
-#main-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh; /* Tam ekran hündürlüyü */
-    width: 100%;
-    opacity: 1;
-    transition: opacity 1s ease-in;
+.app-header { padding: 20px; background: rgba(0,0,0,0.2); border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+.bot-info { display: flex; align-items: center; gap: 15px; }
+
+.bot-avatar {
+    width: 45px; height: 45px; background: linear-gradient(45deg, #00d2ff, #3a7bd5);
+    border-radius: 12px; display: flex; justify-content: center; align-items: center; font-weight: bold;
 }
 
-.hidden {
-    display: none !important;
-    opacity: 0;
+.online-status { color: #00ff88; font-size: 12px; }
+
+#chat-body { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+
+.msg { padding: 12px 18px; border-radius: 15px; max-width: 70%; line-height: 1.5; }
+.bot { background: rgba(255,255,255,0.1); align-self: flex-start; border-bottom-left-radius: 2px; }
+.user { background: var(--accent-color); color: #000; align-self: flex-end; border-bottom-right-radius: 2px; font-weight: 500; }
+
+.input-container { padding: 20px; display: flex; gap: 10px; background: rgba(0,0,0,0.2); }
+
+input {
+    flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px; padding: 12px 20px; color: white; outline: none; transition: 0.3s;
 }
 
-/* Çat Başlığı */
-.chat-header {
-    height: 60px;
-    background-color: #1f1f1f;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    border-bottom: 1px solid #333;
-}
-
-.status-dot {
-    height: 10px;
-    width: 10px;
-    background-color: #2ecc71; /* Yaşıl aktiv nöqtə */
-    border-radius: 50%;
-}
-
-/* Mesaj Sahəsi */
-#chat-window {
-    flex: 1; /* Qalan bütün hündürlüyü tutsun */
-    padding: 20px;
-    overflow-y: auto; /* Mesajlar çoxalsa skrol olsun */
-    background-color: #181818;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-/* Mesaj Balonları */
-.message {
-    max-width: 80%;
-    padding: 10px 15px;
-    border-radius: 10px;
-    line-height: 1.4;
-    font-size: 15px;
-}
-
-.ai-message {
-    align-self: flex-start;
-    background-color: #333;
-    color: #eee;
-    border-top-left-radius: 0;
-}
-
-.user-message {
-    align-self: flex-end;
-    background-color: #007bff; /* Mavi rəng */
-    color: white;
-    border-top-right-radius: 0;
-}
-
-/* Yazı Sahəsi (Footer) */
-.input-area {
-    height: 70px;
-    background-color: #1f1f1f;
-    display: flex;
-    align-items: center;
-    padding: 0 15px;
-    border-top: 1px solid #333;
-}
-
-input[type="text"] {
-    flex: 1;
-    height: 45px;
-    background-color: #2c2c2c;
-    border: 1px solid #444;
-    border-radius: 25px;
-    color: white;
-    padding: 0 20px;
-    font-size: 16px;
-    outline: none;
-}
-
-input[type="text"]:focus {
-    border-color: #007bff;
-}
+input:focus { border-color: var(--accent-color); background: rgba(255,255,255,0.1); }
 
 #send-btn {
-    background: none;
-    border: none;
-    color: #007bff;
-    margin-left: 10px;
-    cursor: pointer;
-    transition: transform 0.2s;
+    background: var(--accent-color); border: none; width: 48px; height: 48px;
+    border-radius: 12px; cursor: pointer; display: flex; justify-content: center; align-items: center;
 }
 
-#send-btn:hover {
-    transform: scale(1.1);
-}
+/* ANIMASIYALAR */
+@keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } }
+@keyframes load { to { width: 100%; } }
 
-/* --- 3. RESPONSİV DİZAYN (TELEFONLAR ÜÇÜN) --- */
+.hidden { display: none !important; }
+
+/* MOBİL VERSİYA */
 @media (max-width: 600px) {
-    .message {
-        max-width: 90%; /* Telefonda mesajlar daha geniş olsun */
-        font-size: 14px;
-    }
-
-    .chat-header h3 {
-        font-size: 18px;
-    }
-
-    .input-area {
-        height: 60px;
-    }
-
-    input[type="text"] {
-        height: 40px;
-        font-size: 14px;
-    }
+    .glass-card { height: 95vh; border-radius: 0; }
+    #app-container { padding: 0; }
 }
