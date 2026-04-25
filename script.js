@@ -1,62 +1,45 @@
-// Sayt yüklənəndə animasiya məntiqi
 window.onload = () => {
-    // 1. Loqo animasiyasının bitməsini gözlə (CSS-də 2.5s təyin edilib)
+    // 3 saniyəlik yüklənmə simulyasiyası
     setTimeout(() => {
-        const intro = document.getElementById('intro-screen');
-        const main = document.getElementById('main-container');
+        const loader = document.getElementById('loader-wrapper');
+        const app = document.getElementById('app-container');
 
-        // Açılış ekranını yavaşca itir
-        intro.style.opacity = '0';
-        
-        // Tamamilə yox olduqdan sonra (1s sora) çat ekranını göstər
+        loader.style.opacity = '0';
         setTimeout(() => {
-            intro.style.display = 'none'; // Ekrandan tam çıxar
-            main.classList.remove('hidden'); // Çatı göstər
-            
-            // Ekran skrolunu bərpa et (əgər çatın daxilində lazımdırsa)
-            document.body.style.overflow = 'auto';
-            document.documentElement.style.overflow = 'auto';
-        }, 1000); 
-        
-    }, 2500); // 2.5 saniyə gözlə (loqo animasiyası vaxtı)
+            loader.classList.add('hidden');
+            app.classList.remove('hidden');
+            app.style.animation = 'fadeIn 1s forwards';
+        }, 500);
+    }, 3000);
 };
 
-// Mesaj göndərmə funksiyası
-function sendMessage() {
+function handleMessage() {
     const input = document.getElementById('user-input');
-    const window = document.getElementById('chat-window');
-    const messageText = input.value.trim();
+    const chatBody = document.getElementById('chat-body');
     
-    if (messageText !== "") {
-        // 1. İstifadəçinin mesajını ekrana əlavə et
-        window.innerHTML += `
-            <div class="message user-message">
-                <p>${messageText}</p>
-            </div>
-        `;
+    if (input.value.trim() !== "") {
+        // İstifadəçi mesajı
+        const userDiv = document.createElement('div');
+        userDiv.className = 'msg user';
+        userDiv.textContent = input.value;
+        chatBody.appendChild(userDiv);
         
-        // 2. Giriş sahəsini təmizlə
+        const text = input.value;
         input.value = "";
-        
-        // 3. Avtomatik olaraq aşağı skrol et
-        window.scrollTop = window.scrollHeight;
+        chatBody.scrollTop = chatBody.scrollHeight;
 
-        // 4. (Hələlik) Sadə süni intellekt cavabını simulyasiya et
+        // Bot cavabı (Simulyasiya)
         setTimeout(() => {
-            window.innerHTML += `
-                <div class="message ai-message">
-                    <p>Mən sizin mesajınızı aldım: "<i>${messageText}</i>". İndi API ilə bağlantı qurmağı öyrənirəm!</p>
-                </div>
-            `;
-            // Yenidən aşağı skrol et
-            window.scrollTop = window.scrollHeight;
-        }, 1500);
+            const botDiv = document.createElement('div');
+            botDiv.className = 'msg bot';
+            botDiv.textContent = "Hazırda üzərimdə iş gedir, amma səni eşitdim: " + text;
+            chatBody.appendChild(botDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }, 1000);
     }
 }
 
-// "Enter" düyməsini sıxanda mesajı göndər
-document.getElementById('user-input').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') {
-        sendMessage();
-    }
+// Enter düyməsi ilə göndərmə
+document.getElementById('user-input').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') handleMessage();
 });
