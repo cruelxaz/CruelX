@@ -1,51 +1,34 @@
 window.onload = () => {
-    // 3 saniyəlik giriş animasiyası
+    // 4 saniyə gözləyirik (loqonun gəlməsi və bir az qalması üçün)
     setTimeout(() => {
-        const loader = document.getElementById('loader-wrapper');
-        const app = document.getElementById('app');
+        const overlay = document.getElementById('intro-overlay');
+        const mainApp = document.getElementById('main-app');
 
-        loader.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-        loader.style.opacity = '0';
-        loader.style.transform = 'scale(1.2)';
+        // Overlay-i yuxarı sürüşdürərək və ya itərək yox et
+        overlay.style.opacity = '0';
+        overlay.style.transform = 'translateY(-100%)'; // Yuxarı doğru qalxma effekti
 
         setTimeout(() => {
-            loader.classList.add('hidden');
-            app.classList.remove('hidden');
+            overlay.classList.add('hidden');
+            mainApp.classList.remove('hidden');
             
-            // Mesajın animasiya ilə gəlməsi üçün cüzi gecikmə
-            const initialMsg = document.querySelector('.msg-bubble');
-            initialMsg.style.animationDelay = '0.5s';
-        }, 800);
-    }, 3000);
+            // Sayfa açıldıqdan sonra xoş gəldin mesajını bir az gecikmə ilə göstər
+            const botMsg = document.querySelector('.bot-msg');
+            botMsg.style.opacity = '0';
+            setTimeout(() => {
+                botMsg.style.transition = 'opacity 1s';
+                botMsg.style.opacity = '1';
+            }, 500);
+        }, 1200); // Overlay animasiyasının bitməsini gözləyirik
+    }, 4500); 
 };
 
-function processMessage() {
+function send() {
     const input = document.getElementById('user-input');
-    const chatArea = document.getElementById('chat-area');
-    
-    if (input.value.trim() !== "") {
-        // İstifadəçi mesajı + animasiya
-        const userDiv = document.createElement('div');
-        userDiv.className = 'msg-bubble user anim-fade-up';
-        userDiv.textContent = input.value;
-        chatArea.appendChild(userDiv);
-        
-        const text = input.value;
+    const screen = document.getElementById('chat-screen');
+    if(input.value.trim() !== "") {
+        screen.innerHTML += `<div class="msg" style="align-self: flex-end; background: #00d2ff; color: #000;">${input.value}</div>`;
         input.value = "";
-        chatArea.scrollTop = chatArea.scrollHeight;
-
-        // Botun cavabı
-        setTimeout(() => {
-            const botDiv = document.createElement('div');
-            botDiv.className = 'msg-bubble bot anim-fade-up';
-            botDiv.innerHTML = `<i class="fas fa-sparkles"></i> Sizi dinləyirəm... "${text}" haqqında nə düşünürsünüz?`;
-            chatArea.appendChild(botDiv);
-            chatArea.scrollTop = chatArea.scrollHeight;
-        }, 1200);
+        screen.scrollTop = screen.scrollHeight;
     }
 }
-
-// Enter düyməsi dəstəyi
-document.getElementById('user-input').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') processMessage();
-});
