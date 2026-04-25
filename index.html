@@ -3,56 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nova AI Assistant</title>
+    <title>CruelX AI</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-    <div id="loader-wrapper">
-        <div class="loader-content">
-            <div class="logo-container">
-                <img src="logo.png" alt="Logo" class="main-logo">
-                <div class="logo-glow"></div>
-            </div>
-            <div class="progress-container">
-                <div class="progress-bar"></div>
-            </div>
-            <p class="wait-text">Sistem yüklənir, zəhmət olmasa gözləyin...</p>
+    <div id="intro-overlay">
+        <div class="intro-content">
+            <img src="logo.png" alt="Logo" class="cinema-logo">
+            <div class="loader-line"></div>
+            <p class="wait-msg">Sistem hazırlanır...</p>
         </div>
     </div>
 
-    <main id="app" class="hidden">
-        <div class="glass-ui">
-            <header class="header anim-slide-down">
-                <div class="profile">
-                    <div class="avatar">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <div class="info">
-                        <h2>Nova Assistant</h2>
-                        <span class="status">Sizin üçün hazırdır</span>
-                    </div>
+    <div id="main-app" class="hidden">
+        <div class="chat-wrapper anim-pop-in">
+            <header>
+                <div class="status-box">
+                    <div class="dot"></div>
+                    <span>CruelX Online</span>
                 </div>
-                <button class="menu-btn"><i class="fas fa-ellipsis-v"></i></button>
             </header>
+            
+            <div id="chat-screen">
+                <div class="msg bot-msg">Xoş gəldiniz! Sizin üçün nə edə bilərəm?</div>
+            </div>
 
-            <section id="chat-area">
-                <div class="msg-bubble bot anim-fade-up">
-                    <p>Salam! Xoş gəldiniz. Mən sizin ağıllı köməkçinizəm. <br> Nədən başlayaq?</p>
-                </div>
-            </section>
-
-            <footer class="footer anim-slide-up">
-                <div class="input-wrapper">
-                    <input type="text" id="user-input" placeholder="Mesajınızı bura yazın..." autocomplete="off">
-                    <button id="send-btn" onclick="processMessage()">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            </footer>
+            <div class="input-container">
+                <input type="text" id="user-input" placeholder="Sualınızı bura yazın...">
+                <button onclick="send()">Göndər</button>
+            </div>
         </div>
-    </main>
+    </div>
 
     <script src="script.js"></script>
 </body>
