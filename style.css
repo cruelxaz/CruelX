@@ -1,89 +1,79 @@
 :root {
-    --bg-color: #0a0c10;
-    --accent-color: #00d2ff;
-    --glass-bg: rgba(255, 255, 255, 0.05);
-    --text-color: #ffffff;
+    --accent: #7000ff; /* Neon Bənövşəyi */
+    --glass: rgba(255, 255, 255, 0.03);
+    --border: rgba(255, 255, 255, 0.1);
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
-body { background: var(--bg-color); color: var(--text-color); height: 100vh; overflow: hidden; }
+body { 
+    background: #020205; 
+    height: 100vh; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    overflow: hidden;
+}
 
 /* --- LOADER --- */
 #loader-wrapper {
-    position: fixed; width: 100%; height: 100%; background: #000;
-    display: flex; justify-content: center; align-items: center; z-index: 1000;
+    position: fixed; inset: 0; background: #000;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 2000;
 }
 
-.loader-content { text-align: center; }
-
-.loader-logo { width: 100px; margin-bottom: 20px; animation: pulse 2s infinite; }
-
-.loading-bar {
-    width: 200px; height: 4px; background: #222; border-radius: 10px;
-    margin: 10px auto; overflow: hidden;
+.logo-container { position: relative; margin-bottom: 30px; }
+.main-logo { width: 120px; z-index: 2; position: relative; animation: float 3s infinite ease-in-out; }
+.logo-glow { 
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 150px; height: 150px; background: var(--accent); filter: blur(60px); opacity: 0.3;
 }
 
-.progress {
-    width: 0%; height: 100%; background: var(--accent-color);
-    box-shadow: 0 0 15px var(--accent-color);
-    animation: load 3s forwards;
+.progress-container { width: 250px; height: 2px; background: #111; border-radius: 10px; overflow: hidden; }
+.progress-bar { width: 0%; height: 100%; background: var(--accent); box-shadow: 0 0 15px var(--accent); animation: fill 3s forwards; }
+.wait-text { margin-top: 15px; color: #444; font-size: 13px; letter-spacing: 2px; }
+
+/* --- MAIN INTERFACE --- */
+#app { width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+.glass-ui { 
+    width: 100%; max-width: 1000px; height: 85vh; 
+    background: var(--glass); backdrop-filter: blur(25px); 
+    border: 1px solid var(--border); border-radius: 30px;
+    display: flex; flex-direction: column; position: relative;
 }
 
-.loading-text { font-size: 14px; color: #888; letter-spacing: 1px; }
+.header { padding: 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.profile { display: flex; align-items: center; gap: 15px; }
+.avatar { width: 50px; height: 50px; background: linear-gradient(135deg, #7000ff, #00d2ff); border-radius: 15px; display: flex; justify-content: center; align-items: center; font-size: 20px; }
+.status { font-size: 12px; color: #00ff88; }
 
-/* --- ANA SƏHİFƏ (GLASSMORPHISM) --- */
-#app-container {
-    height: 100vh; display: flex; justify-content: center; align-items: center;
-    padding: 20px; background: radial-gradient(circle at center, #1a1a2e 0%, #0a0c10 100%);
+#chat-area { flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
+.msg-bubble { padding: 15px 22px; border-radius: 20px; max-width: 75%; font-size: 15px; color: rgba(255,255,255,0.9); }
+.bot { background: rgba(255,255,255,0.05); align-self: flex-start; border-bottom-left-radius: 4px; }
+.user { background: var(--accent); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+
+.footer { padding: 30px; }
+.input-wrapper { 
+    background: rgba(255,255,255,0.03); border: 1px solid var(--border); 
+    padding: 8px 10px 8px 25px; border-radius: 20px; display: flex; gap: 10px;
 }
+input { flex: 1; background: transparent; border: none; color: white; outline: none; font-size: 15px; }
+#send-btn { width: 45px; height: 45px; border-radius: 15px; background: var(--accent); border: none; color: white; cursor: pointer; transition: 0.3s; }
+#send-btn:hover { transform: scale(1.1); box-shadow: 0 0 20px var(--accent); }
 
-.glass-card {
-    width: 100%; max-width: 900px; height: 80vh;
-    background: var(--glass-bg); backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 24px; display: flex; flex-direction: column; overflow: hidden;
-}
+/* --- ANIMASIYA EFFEKTLƏRİ --- */
+.anim-slide-down { animation: slideDown 0.8s ease-out forwards; }
+.anim-slide-up { animation: slideUp 0.8s ease-out forwards; }
+.anim-fade-up { animation: fadeUp 1s ease-out forwards; opacity: 0; }
 
-.app-header { padding: 20px; background: rgba(0,0,0,0.2); border-bottom: 1px solid rgba(255,255,255,0.05); }
-
-.bot-info { display: flex; align-items: center; gap: 15px; }
-
-.bot-avatar {
-    width: 45px; height: 45px; background: linear-gradient(45deg, #00d2ff, #3a7bd5);
-    border-radius: 12px; display: flex; justify-content: center; align-items: center; font-weight: bold;
-}
-
-.online-status { color: #00ff88; font-size: 12px; }
-
-#chat-body { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
-
-.msg { padding: 12px 18px; border-radius: 15px; max-width: 70%; line-height: 1.5; }
-.bot { background: rgba(255,255,255,0.1); align-self: flex-start; border-bottom-left-radius: 2px; }
-.user { background: var(--accent-color); color: #000; align-self: flex-end; border-bottom-right-radius: 2px; font-weight: 500; }
-
-.input-container { padding: 20px; display: flex; gap: 10px; background: rgba(0,0,0,0.2); }
-
-input {
-    flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px; padding: 12px 20px; color: white; outline: none; transition: 0.3s;
-}
-
-input:focus { border-color: var(--accent-color); background: rgba(255,255,255,0.1); }
-
-#send-btn {
-    background: var(--accent-color); border: none; width: 48px; height: 48px;
-    border-radius: 12px; cursor: pointer; display: flex; justify-content: center; align-items: center;
-}
-
-/* ANIMASIYALAR */
-@keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } }
-@keyframes load { to { width: 100%; } }
+@keyframes fill { to { width: 100%; } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+@keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes fadeUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
 .hidden { display: none !important; }
 
-/* MOBİL VERSİYA */
-@media (max-width: 600px) {
-    .glass-card { height: 95vh; border-radius: 0; }
-    #app-container { padding: 0; }
+/* Mobil üçün tam ekran */
+@media (max-width: 768px) {
+    .glass-ui { height: 100vh; border-radius: 0; border: none; }
 }
