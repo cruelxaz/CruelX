@@ -3,39 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mənim AI Köməkçim</title>
+    <title>AI Assistant</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div id="intro-screen">
-        <div class="logo-wrapper">
-            <img src="logo.png" alt="Logo" class="zoom-in-out-logo">
+    <div id="loader-wrapper">
+        <div class="loader-content">
+            <img src="logo.png" alt="Logo" class="loader-logo">
+            <div class="loading-bar">
+                <div class="progress"></div>
+            </div>
+            <p class="loading-text">Zəhmət olmasa, gözləyin...</p>
         </div>
     </div>
 
-    <div id="main-container" class="hidden">
-        
-        <header class="chat-header">
-            <h3>AI Köməkçisi</h3>
-            <span class="status-dot"></span>
-        </header>
+    <main id="app-container" class="hidden">
+        <div class="glass-card">
+            <header class="app-header">
+                <div class="bot-info">
+                    <div class="bot-avatar">AI</div>
+                    <div>
+                        <h2>Nova AI</h2>
+                        <span class="online-status">Online</span>
+                    </div>
+                </div>
+            </header>
 
-        <div id="chat-window">
-            <div class="message ai-message">
-                <p>Salam! Mən sizin süni intellekt köməkçinizəm. Bu gün sizə necə kömək edə bilərəm?</p>
-            </div>
+            <div id="chat-body">
+                <div class="msg bot">Salam! Sizin üçün nə edə bilərəm?</div>
             </div>
 
-        <footer class="input-area">
-            <input type="text" id="user-input" placeholder="Mesajınızı yazın...">
-            <button onclick="sendMessage()" id="send-btn">
-                <svg viewBox="0 0 24 24" width="24" height="24">
-                    <path fill="currentColor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
-                </svg>
-            </button>
-        </footer>
-    </div>
+            <footer class="input-container">
+                <input type="text" id="user-input" placeholder="Mesajınızı bura yazın...">
+                <button id="send-btn" onclick="handleMessage()">
+                    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"></path></svg>
+                </button>
+            </footer>
+        </div>
+    </main>
 
     <script src="script.js"></script>
 </body>
